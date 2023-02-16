@@ -1,0 +1,89 @@
+Database name : ClinicManagement
+username : root
+password : root
+
+
+
+
+
+TABLE : PATIENT
+
+
+CREATE TABLE PATIENT (
+	PatientICNo VARCHAR(13) NOT NULL PRIMARY KEY,
+	PatientFirstName VARCHAR(30) NOT NULL,
+    PatientLastName VARCHAR(30) NOT NULL,
+    PatientAddress VARCHAR(100) NOT NULL,
+    PatientPhone VARCHAR(13) NOT NULL,
+    PatientEmergencyPhone VARCHAR(13)
+)
+
+
+
+
+
+
+
+TABLE : EMPLOYEETYPE
+
+
+CREATE TABLE EMPLOYEETYPE (
+	EmployeeTypeID INT NOT NULL PRIMARY KEY,
+	EmployeeTypeName VARCHAR(30) NOT NULL
+)
+
+
+
+
+
+TABLE : EMPLOYEE
+
+
+CREATE TABLE EMPLOYEE (
+    EmployeeICNo VARCHAR(13) NOT NULL PRIMARY KEY,
+    EmployeeFirstName VARCHAR(30) NOT NULL,
+    EmployeeLastName VARCHAR(30) NOT NULL,
+    EmployeeAddress VARCHAR(100) NOT NULL,
+    EmployeePhone VARCHAR(13) NOT NULL,
+    EmployeeStartDate TIMESTAMP NOT NULL,
+    Username VARCHAR(50) NOT NULL,
+    Password VARCHAR(200) NOT NULL,
+    EmployeeTypeID INT NOT NULL,
+        FOREIGN KEY (EmployeeTypeID) REFERENCES EMPLOYEETYPE(EmployeeTypeID)
+)
+
+
+
+
+
+TABLE : APPOINTMENT
+
+
+CREATE TABLE APPOINTMENT (
+	AppointmentID INT NOT NULL PRIMARY KEY
+        GENERATED ALWAYS AS IDENTITY
+            (START WITH 1000,INCREMENT BY 1),
+	AppointmentDateTime TIMESTAMP NOT NULL,
+    MedicineList VARCHAR(100),
+    Prescription VARCHAR(200),
+    EmployeeICNo VARCHAR(13) NOT NULL,
+    	FOREIGN KEY (EmployeeICNo) REFERENCES Employee(EmployeeICNo),
+    PatientICNo VARCHAR(13) NOT NULL,
+    	FOREIGN KEY (PatientICNo) REFERENCES PATIENT(PatientICNo)
+)
+
+
+
+TABLE : INVOICE 
+
+
+CREATE TABLE INVOICE (
+    InvoiceID INT NOT NULL PRIMARY KEY
+        GENERATED ALWAYS AS IDENTITY
+            (START WITH 100000,INCREMENT BY 1),
+    Amount DECIMAL(5,2) NOT NULL,
+    TransactionTime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    AppointmentID INT NOT NULL,
+        FOREIGN KEY (AppointmentID) REFERENCES APPOINTMENT(AppointmentID)
+)
+
